@@ -1,0 +1,27 @@
+[
+  {
+    "Author": "Sith",
+    "Name": "Nisi Assist",
+    "InternalName": "NisiAssist",
+    "AssemblyVersion": "0.2.0.0",
+    "Description": "Overlay for The Epic of Alexander (Ultimate), Brute Justice / Cruise Chaser phase.\nShows, for the 3rd and 4th Nisi pass, which Nisi to pass or collect, who to swap with,\na countdown for the pass window, and the remaining time on your own Nisi.\nLogic and timings are derived from the Cactbot TEA triggers/timeline.",
+    "Punchline": "TEA phase 2: tells you who to swap Judgment Nisi with on passes 3 and 4.",
+    "Tags": [
+      "ffxiv",
+      "tea",
+      "epic-of-alexander",
+      "ultimate",
+      "nisi"
+    ],
+    "DalamudApiLevel": 15,
+    "ApplicableVersion": "any",
+    "RepoUrl": "https://github.com/metatronnnn/NisiAssist",
+    "IconUrl": "https://raw.githubusercontent.com/metatronnnn/NisiAssist/main/images/icon.png",
+    "IsHide": false,
+    "IsTestingExclusive": false,
+    "DownloadLinkInstall": "https://github.com/metatronnnn/NisiAssist/releases/download/latest/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/metatronnnn/NisiAssist/releases/download/latest/latest.zip",
+    "DownloadLinkTesting": "https://github.com/metatronnnn/NisiAssist/releases/download/latest/latest.zip",
+    "LastUpdate": 1791945977
+  }
+]
