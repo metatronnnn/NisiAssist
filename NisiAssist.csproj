@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Dalamud.NET.Sdk/15.0.0">
+  <PropertyGroup>
+    <Version>0.2.0.0</Version>
+    <Author>Sith</Author>
+    <Name>Nisi Assist</Name>
+    <Punchline>TEA phase 2: tells you who to swap Judgment Nisi with on passes 3 and 4.</Punchline>
+    <Description>Overlay for The Epic of Alexander (Ultimate), Brute Justice / Cruise Chaser phase.
+Shows, for the 3rd and 4th Nisi pass, which Nisi to pass or collect, who to swap with,
+a countdown for the pass window, and the remaining time on your own Nisi.
+Logic and timings are derived from the Cactbot TEA triggers/timeline.</Description>
+    <Tags>ffxiv;tea;epic-of-alexander;ultimate;nisi</Tags>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="images\icon.png" CopyToOutputDirectory="PreserveNewest" Link="images\icon.png" />
+    <None Include="icons\*.png" CopyToOutputDirectory="PreserveNewest" Link="icons\%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>
