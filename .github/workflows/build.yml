@@ -1,0 +1,74 @@
+name: Build and publish
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: [repo.json, '*.md']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Download Dalamud
+        run: |
+          mkdir -p "$HOME/dalamud"
+          curl -sSL -o dalamud.zip https://goatcorp.github.io/dalamud-distrib/latest.zip
+          unzip -q dalamud.zip -d "$HOME/dalamud"
+          echo "DALAMUD_HOME=$HOME/dalamud" >> "$GITHUB_ENV"
+
+      - name: Build
+        run: dotnet build -c Release
+
+      - name: Package latest.zip
+        run: |
+          cd bin/Release
+          test -f NisiAssist.json || { echo "NisiAssist.json manifest not found"; ls; exit 1; }
+          zip -r ../../latest.zip NisiAssist.dll NisiAssist.json NisiAssist.deps.json images icons
+
+      - name: Write repo.json
+        run: |
+          REPO="${{ github.repository }}"
+          BASE="https://github.com/$REPO"
+          RAW="https://raw.githubusercontent.com/$REPO/main"
+          jq -e '.DalamudApiLevel' bin/Release/NisiAssist.json > /dev/null \
+            || { echo "DalamudApiLevel missing in manifest"; cat bin/Release/NisiAssist.json; exit 1; }
+          jq --arg dl "$BASE/releases/download/latest/latest.zip" \
+             --arg repo "$BASE" --arg icon "$RAW/images/icon.png" --argjson now "$(date +%s)" \
+             '[{
+                Author, Name, InternalName, AssemblyVersion, Description, Punchline, Tags,
+                DalamudApiLevel,
+                ApplicableVersion: "any",
+                RepoUrl: $repo,
+                IconUrl: $icon,
+                IsHide: false,
+                IsTestingExclusive: false,
+                DownloadLinkInstall: $dl,
+                DownloadLinkUpdate: $dl,
+                DownloadLinkTesting: $dl,
+                LastUpdate: $now
+              }]' bin/Release/NisiAssist.json > repo.json
+          cat repo.json
+
+      - name: Publish release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --cleanup-tag --yes || true
+          gh release create latest latest.zip --title "Latest build" --notes "Automated build"
+
+      - name: Commit repo.json
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add repo.json
+          git diff --cached --quiet || (git commit -m "Update repo.json" && git push)
