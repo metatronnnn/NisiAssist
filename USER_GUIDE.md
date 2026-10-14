@@ -8,17 +8,19 @@
 
 ---
 
-## 1. ติดตั้ง
+## 1. ติดตั้ง (แบบ Custom Repository ไม่ต้อง build เอง)
 
-1. ใช้ XIVLauncher ที่เปิด Dalamud และติดตั้ง .NET SDK ตามที่ Dalamud ต้องการ
-2. แตกซิป เปิดเทอร์มินัลในโฟลเดอร์ `NisiAssist` แล้วรัน
+1. ใช้ XIVLauncher ที่เปิด Dalamud
+2. ในเกมพิมพ์ `/xlsettings` → แท็บ **Experimental**
+3. ช่อง **Custom Plugin Repositories** วางลิงก์นี้ แล้วกดเครื่องหมาย **+** → **Save and Close**
    ```
-   dotnet build -c Release
+   https://raw.githubusercontent.com/metatronnnn/NisiAssist/main/repo.json
    ```
-3. ในเกมพิมพ์ `/xlsettings` → แท็บ **Experimental** → **Dev Plugin Locations** → เพิ่มพาธไฟล์ `NisiAssist.dll` ที่ build ได้ → **Save**
-4. พิมพ์ `/xlplugins` → **Dev Tools** → **Installed Dev Plugins** → เปิดสวิตช์ **Nisi Assist**
+4. พิมพ์ `/xlplugins` → **All Plugins** → ค้นหา `nisi` → **Install**
+5. เมื่อมีเวอร์ชันใหม่ จะมีปุ่ม **Update** ใน `/xlplugins` กดอัปเดตได้เลย
 
 > ปลั๊กอินของ Dalamud ไม่ได้รับอนุญาตจาก Square Enix อย่างเป็นทางการ ใช้โดยเข้าใจความเสี่ยงเอง
+> ถ้าเคยติดตั้งแบบ Dev Plugin (build เอง) ให้ปิดและลบอันนั้นก่อน ไม่งั้นจะซ้ำกัน
 
 ## 2. ตั้งค่าครั้งแรก (ทำนอกดันเจี้ยนได้)
 

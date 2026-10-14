@@ -17,18 +17,23 @@
 - รอบ 3 = 8 วิ หลัง Brute Justice เริ่มร่าย Flarethrower (`0x4845`) นาน 9 วิ
 - รอบ 4 = 15 วิ ก่อน Propeller Wind (`0x4832`) นาน 14 วิ
 
-## Build และติดตั้ง
-1. ติดตั้ง .NET SDK ตามที่ Dalamud ต้องการ และใช้ XIVLauncher ที่เปิด Dalamud
-2. `dotnet build -c Release` ในโฟลเดอร์นี้ (SDK `Dalamud.NET.Sdk/15.0.0` จะดึงไลบรารี Dalamud มาเอง)
-3. ในเกม: `/xlsettings` → Experimental → Dev Plugin Locations → เพิ่มพาธไฟล์ `NisiAssist.dll` ที่ build ได้ → Save
-4. `/xlplugins` → Dev Tools → Installed Dev Plugins → เปิด **Nisi Assist**
+## ติดตั้ง (แบบ Custom Repository ไม่ต้อง build เอง)
 
-## นับถอยหลังน้ำ / สายฟ้า
-- ดีบัพ Compressed Water (`0x85E`) และ Compressed Lightning (`0x85F`) บนตัวคุณ
-- 5 วินาทีสุดท้ายก่อนหมด จะขึ้นเลขใหญ่โปร่งใส (ฟ้า = น้ำ, เหลือง = สายฟ้า) พร้อมเสียงทุกวินาที และเสียงต่างหากตอนวินาทีสุดท้าย
-- เลิกแจ้งหลัง Brute Justice เริ่มร่าย Gavel (`0x483C`) เหมือนที่ Cactbot ทำ
-- ปรับจำนวนวินาที ขนาดเลข และเลขเสียง (`<se.N>` 1–16) ใน settings, `/nisi preview` ใช้ลากวางตำแหน่ง
-- เสียงเล่นผ่าน `UIGlobals.PlayChatSoundEffect` ของ ClientStructs (ถ้า build ไม่ผ่านตรงนี้ บอกได้)
+1. ใช้ XIVLauncher ที่เปิด Dalamud
+2. ในเกมพิมพ์ `/xlsettings` → แท็บ **Experimental**
+3. ช่อง **Custom Plugin Repositories** วางลิงก์นี้ แล้วกดเครื่องหมาย **+** → **Save and Close**
+   ```
+   https://raw.githubusercontent.com/metatronnnn/NisiAssist/main/repo.json
+   ```
+4. พิมพ์ `/xlplugins` → **All Plugins** → ค้นหา `nisi` → **Install**
+5. เมื่อมีเวอร์ชันใหม่ จะมีปุ่ม **Update** ใน `/xlplugins` กดอัปเดตได้เลย
+
+> ปลั๊กอินของ Dalamud ไม่ได้รับอนุญาตจาก Square Enix อย่างเป็นทางการ ใช้โดยเข้าใจความเสี่ยงเอง
+> ถ้าเคยติดตั้งแบบ Dev Plugin (build เอง) ให้ปิดและลบอันนั้นก่อน ไม่งั้นจะซ้ำกัน
+
+## สำหรับผู้พัฒนา (build เอง)
+`dotnet build -c Release` แล้วเพิ่มพาธ `NisiAssist.dll` ใน `/xlsettings` → Experimental → Dev Plugin Locations
+(ดู PUBLISH_GUIDE.md สำหรับการเผยแพร่)
 
 ## คำสั่ง
 - `/nisi` เปิดหน้า settings
