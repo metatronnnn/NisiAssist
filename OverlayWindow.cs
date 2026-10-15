@@ -10,6 +10,7 @@ public sealed class OverlayWindow : Window, IDisposable
     private readonly Configuration _cfg;
     private readonly NisiTracker _tracker;
     private readonly Icons _icons;
+    private readonly Fonts _fonts;
 
     private static readonly Vector4 White = new(1f, 1f, 1f, 1f);
     private static readonly Vector4 Grey = new(0.7f, 0.7f, 0.7f, 1f);
@@ -19,12 +20,13 @@ public sealed class OverlayWindow : Window, IDisposable
         ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoCollapse |
         ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoFocusOnAppearing | ImGuiWindowFlags.NoNav;
 
-    public OverlayWindow(Configuration cfg, NisiTracker tracker, Icons icons)
+    public OverlayWindow(Configuration cfg, NisiTracker tracker, Icons icons, Fonts fonts)
         : base("Nisi Assist##overlay", BaseFlags)
     {
         _cfg = cfg;
         _tracker = tracker;
         _icons = icons;
+        _fonts = fonts;
         RespectCloseHotkey = false;
         IsOpen = true;
     }
@@ -71,7 +73,8 @@ public sealed class OverlayWindow : Window, IDisposable
         if (g == null)
             return;
 
-        ApplyFontScale();
+        using var font = _fonts.PushText(Fonts.TextPx(_cfg.FontScale), out var fontScale);
+        ImGui.SetWindowFontScale(fontScale);
 
         // Header: which pass + countdown of the window
         var header = g.Phase == PassPhase.Active ? $"NISI PASS {g.Pass}" : $"NISI PASS {g.Pass} - next";

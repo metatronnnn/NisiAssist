@@ -22,7 +22,8 @@ public sealed class Configuration : IPluginConfiguration
     // ---- water / lightning debuff countdown ----
     public bool ShowDebuffCountdown { get; set; } = true;
     public float DebuffCountdownSeconds { get; set; } = 5.0f;   // start showing when this many seconds remain
-    public float CountdownFontScale { get; set; } = 7.0f;       // big, transparent number
+    public float CountdownFontScale { get; set; } = 7.0f;       // (old, unused since 0.2.1)
+    public float CountdownSize { get; set; } = 120f;            // height of the big number in pixels
     public bool DebuffSoundEnabled { get; set; } = true;
     public int DebuffTickSound { get; set; } = 2;               // in-game chat sound effect <se.N> (1-16), played every second
     public int DebuffFinalSound { get; set; } = 6;              // played on the last second

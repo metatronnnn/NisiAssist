@@ -50,7 +50,7 @@ public sealed class ConfigWindow : Window, IDisposable
         ImGui.TextUnformatted("Water / Lightning countdown");
         changed |= Check("Show big countdown for my water/lightning debuff", _cfg.ShowDebuffCountdown, v => _cfg.ShowDebuffCountdown = v);
         changed |= Slider("Start at (seconds left)", _cfg.DebuffCountdownSeconds, 1f, 10f, v => _cfg.DebuffCountdownSeconds = v);
-        changed |= Slider("Number size", _cfg.CountdownFontScale, 2f, 14f, v => _cfg.CountdownFontScale = v);
+        changed |= Slider("Number size (pixels)", _cfg.CountdownSize, 40f, 250f, v => _cfg.CountdownSize = v);
         changed |= Check("Play sound", _cfg.DebuffSoundEnabled, v => _cfg.DebuffSoundEnabled = v);
 
         var tick = _cfg.DebuffTickSound;

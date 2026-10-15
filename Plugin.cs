@@ -23,6 +23,7 @@ public sealed class Plugin : IDalamudPlugin
 
     private readonly WindowSystem _windows = new("NisiAssist");
     private readonly NisiTracker _tracker;
+    private readonly Fonts _fonts;
     private readonly ConfigWindow _configWindow;
     private readonly OverlayWindow _overlay;
     private readonly CountdownWindow _countdown;
@@ -32,13 +33,14 @@ public sealed class Plugin : IDalamudPlugin
         Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 
         _tracker = new NisiTracker(ObjectTable, PartyList, Condition, Configuration);
+        _fonts = new Fonts(PluginInterface);
         var icons = new Icons(TextureProvider, PluginInterface);
         _configWindow = new ConfigWindow(Configuration, _tracker);
-        _overlay = new OverlayWindow(Configuration, _tracker, icons);
+        _overlay = new OverlayWindow(Configuration, _tracker, icons, _fonts);
 
         _windows.AddWindow(_configWindow);
         _windows.AddWindow(_overlay);
-        _countdown = new CountdownWindow(Configuration, _tracker, icons);
+        _countdown = new CountdownWindow(Configuration, _tracker, icons, _fonts);
         _windows.AddWindow(_countdown);
 
         CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
@@ -65,6 +67,7 @@ public sealed class Plugin : IDalamudPlugin
         _configWindow.Dispose();
         _overlay.Dispose();
         _countdown.Dispose();
+        _fonts.Dispose();
     }
 
     private void OnUpdate(IFramework framework)

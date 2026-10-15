@@ -14,6 +14,7 @@ public sealed class CountdownWindow : Window, IDisposable
     private readonly Configuration _cfg;
     private readonly NisiTracker _tracker;
     private readonly Icons _icons;
+    private readonly Fonts _fonts;
 
     private const ImGuiWindowFlags BaseFlags =
         ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoCollapse |
@@ -23,12 +24,13 @@ public sealed class CountdownWindow : Window, IDisposable
     private static readonly Vector4 WaterColor = new(0.30f, 0.72f, 1.00f, 0.95f);
     private static readonly Vector4 LightningColor = new(1.00f, 0.92f, 0.25f, 0.95f);
 
-    public CountdownWindow(Configuration cfg, NisiTracker tracker, Icons icons)
+    public CountdownWindow(Configuration cfg, NisiTracker tracker, Icons icons, Fonts fonts)
         : base("Nisi Assist countdown##countdown", BaseFlags)
     {
         _cfg = cfg;
         _tracker = tracker;
         _icons = icons;
+        _fonts = fonts;
         RespectCloseHotkey = false;
         IsOpen = true;
         Position = new Vector2(720, 260);
@@ -54,14 +56,20 @@ public sealed class CountdownWindow : Window, IDisposable
             var label = c.Kind == DebuffKind.Water ? "WATER" : "LIGHTNING";
             var number = Math.Max(1, (int)Math.Ceiling(c.Remaining)).ToString();
 
-            // Same font-scale call as the main overlay; swap it here if your Dalamud version changes it.
-            ImGui.SetWindowFontScale(_cfg.CountdownFontScale);
-            ImGui.TextColored(color, number);
+            // Big number: game number font rasterised at 184px, so it stays sharp when large.
+            using (_fonts.PushDigits(_cfg.CountdownSize, out var digitScale))
+            {
+                ImGui.SetWindowFontScale(digitScale);
+                ImGui.TextColored(color, number);
+            }
 
-            ImGui.SetWindowFontScale(Math.Max(1.2f, _cfg.CountdownFontScale * 0.25f));
-            if (_cfg.ShowIcons && _icons.Draw(c.Kind == DebuffKind.Water ? "water" : "lightning", ImGui.GetTextLineHeight()))
-                ImGui.SameLine();
-            ImGui.TextColored(color, label);
+            using (_fonts.PushText(Math.Max(22f, _cfg.CountdownSize * 0.22f), out var labelScale))
+            {
+                ImGui.SetWindowFontScale(labelScale);
+                if (_cfg.ShowIcons && _icons.Draw(c.Kind == DebuffKind.Water ? "water" : "lightning", ImGui.GetTextLineHeight()))
+                    ImGui.SameLine();
+                ImGui.TextColored(color, label);
+            }
         }
     }
 }
