@@ -17,6 +17,7 @@ public sealed class Configuration : IPluginConfiguration
     public bool ShowUpcoming { get; set; } = true;        // show the next pass shortly before its window opens
     public float UpcomingLead { get; set; } = 5.0f;       // seconds before the window to start showing
     public float FontScale { get; set; } = 1.6f;
+    public float UiScale { get; set; } = 1.0f;            // overall multiplier for all overlay text (use ~2 on a 4K screen)
     public float BackgroundAlpha { get; set; } = 0.55f;
 
     // ---- water / lightning debuff countdown ----

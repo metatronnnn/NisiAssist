@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Dalamud.NET.Sdk/15.0.0">
   <PropertyGroup>
-    <Version>0.2.1.0</Version>
+    <Version>0.2.2.0</Version>
     <Author>Sith</Author>
     <Name>Nisi Assist</Name>
     <Punchline>TEA phase 2: tells you who to swap Judgment Nisi with on passes 3 and 4.</Punchline>

@@ -57,13 +57,13 @@ public sealed class CountdownWindow : Window, IDisposable
             var number = Math.Max(1, (int)Math.Ceiling(c.Remaining)).ToString();
 
             // Big number: game number font rasterised at 184px, so it stays sharp when large.
-            using (_fonts.PushDigits(_cfg.CountdownSize, out var digitScale))
+            using (_fonts.PushDigits(_cfg.CountdownSize * Fonts.Mul(_cfg.UiScale), out var digitScale))
             {
                 ImGui.SetWindowFontScale(digitScale);
                 ImGui.TextColored(color, number);
             }
 
-            using (_fonts.PushText(Math.Max(22f, _cfg.CountdownSize * 0.22f), out var labelScale))
+            using (_fonts.PushText(Math.Max(22f, _cfg.CountdownSize * 0.22f) * Fonts.Mul(_cfg.UiScale), out var labelScale))
             {
                 ImGui.SetWindowFontScale(labelScale);
                 if (_cfg.ShowIcons && _icons.Draw(c.Kind == DebuffKind.Water ? "water" : "lightning", ImGui.GetTextLineHeight()))

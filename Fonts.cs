@@ -1,6 +1,7 @@
 using System;
 using Dalamud.Interface.GameFonts;
 using Dalamud.Interface.ManagedFontAtlas;
+using Dalamud.Interface.Utility;
 using Dalamud.Plugin;
 
 namespace NisiAssist;
@@ -55,7 +56,10 @@ public sealed class Fonts : IDisposable
         return _digits.Push();
     }
 
-    public static float TextPx(float fontScale) => fontScale * DefaultImGuiPx;
+    /// <summary>Overall multiplier = your "Overall scale" setting x Dalamud's global UI scale (DPI).</summary>
+    public static float Mul(float uiScale) => Math.Max(0.1f, uiScale) * ImGuiHelpers.GlobalScale;
+
+    public static float TextPx(float fontScale, float uiScale) => fontScale * DefaultImGuiPx * Mul(uiScale);
 
     public void Dispose()
     {

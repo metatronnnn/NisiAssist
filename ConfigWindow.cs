@@ -40,8 +40,10 @@ public sealed class ConfigWindow : Window, IDisposable
         changed |= Check("Show remaining time of my Nisi", _cfg.ShowMyNisiTimer, v => _cfg.ShowMyNisiTimer = v);
         changed |= Check("Show next pass a few seconds early", _cfg.ShowUpcoming, v => _cfg.ShowUpcoming = v);
 
+        changed |= Slider("Overall scale (4K screen: try 2.0)", _cfg.UiScale, 0.5f, 4.0f, v => _cfg.UiScale = v);
+
         var scale = _cfg.FontScale;
-        if (ImGui.SliderFloat("Text size", ref scale, 0.8f, 3.0f)) { _cfg.FontScale = scale; changed = true; }
+        if (ImGui.SliderFloat("Text size", ref scale, 0.8f, 4.0f)) { _cfg.FontScale = scale; changed = true; }
 
         var alpha = _cfg.BackgroundAlpha;
         if (ImGui.SliderFloat("Background opacity", ref alpha, 0.0f, 1.0f)) { _cfg.BackgroundAlpha = alpha; changed = true; }
@@ -50,7 +52,7 @@ public sealed class ConfigWindow : Window, IDisposable
         ImGui.TextUnformatted("Water / Lightning countdown");
         changed |= Check("Show big countdown for my water/lightning debuff", _cfg.ShowDebuffCountdown, v => _cfg.ShowDebuffCountdown = v);
         changed |= Slider("Start at (seconds left)", _cfg.DebuffCountdownSeconds, 1f, 10f, v => _cfg.DebuffCountdownSeconds = v);
-        changed |= Slider("Number size (pixels)", _cfg.CountdownSize, 40f, 250f, v => _cfg.CountdownSize = v);
+        changed |= Slider("Number size (pixels)", _cfg.CountdownSize, 40f, 400f, v => _cfg.CountdownSize = v);
         changed |= Check("Play sound", _cfg.DebuffSoundEnabled, v => _cfg.DebuffSoundEnabled = v);
 
         var tick = _cfg.DebuffTickSound;

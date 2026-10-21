@@ -73,7 +73,7 @@ public sealed class OverlayWindow : Window, IDisposable
         if (g == null)
             return;
 
-        using var font = _fonts.PushText(Fonts.TextPx(_cfg.FontScale), out var fontScale);
+        using var font = _fonts.PushText(Fonts.TextPx(_cfg.FontScale, _cfg.UiScale), out var fontScale);
         ImGui.SetWindowFontScale(fontScale);
 
         // Header: which pass + countdown of the window
