@@ -53,7 +53,7 @@ public sealed class CountdownWindow : Window, IDisposable
         foreach (var c in _tracker.Countdowns)
         {
             var color = c.Kind == DebuffKind.Water ? WaterColor : LightningColor;
-            var label = c.Kind == DebuffKind.Water ? "WATER" : "LIGHTNING";
+            var label = c.Kind == DebuffKind.Water ? Loc.Water : Loc.Lightning;
             var number = Math.Max(1, (int)Math.Ceiling(c.Remaining)).ToString();
 
             // Big number: game number font rasterised at 184px, so it stays sharp when large.

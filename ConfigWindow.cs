@@ -9,12 +9,14 @@ public sealed class ConfigWindow : Window, IDisposable
 {
     private readonly Configuration _cfg;
     private readonly NisiTracker _tracker;
+    private readonly Fonts _fonts;
 
-    public ConfigWindow(Configuration cfg, NisiTracker tracker)
+    public ConfigWindow(Configuration cfg, NisiTracker tracker, Fonts fonts)
         : base("Nisi Assist settings##config")
     {
         _cfg = cfg;
         _tracker = tracker;
+        _fonts = fonts;
         Size = new Vector2(380, 420);
         SizeCondition = ImGuiCond.FirstUseEver;
     }
@@ -30,6 +32,14 @@ public sealed class ConfigWindow : Window, IDisposable
         var preview = _tracker.Preview;
         if (ImGui.Checkbox("Preview overlay (drag it where you want it)", ref preview))
             _tracker.Preview = preview;
+
+        ImGui.TextUnformatted("Language:");
+        ImGui.SameLine();
+        if (ImGui.RadioButton("English", _cfg.Language == 0)) { _cfg.Language = 0; Loc.Thai = false; changed = true; }
+        ImGui.SameLine();
+        if (ImGui.RadioButton("Thai", _cfg.Language == 1)) { _cfg.Language = 1; Loc.Thai = true; changed = true; }
+        if (_cfg.Language == 1 && !_fonts.ThaiAvailable)
+            ImGui.TextColored(new Vector4(1f, 0.5f, 0.4f, 1f), "Thai font file not found (icons/Sarabun-Regular.ttf) - showing English");
 
         ImGui.Separator();
         ImGui.TextUnformatted("Display");
@@ -68,14 +78,20 @@ public sealed class ConfigWindow : Window, IDisposable
         var whManual = _tracker.WormholeManual;
         if (ImGui.Checkbox("Show wormhole guide now (manual)", ref whManual))
             _tracker.WormholeManual = whManual;
-        if (ImGui.TreeNode("Edit wormhole text per number"))
+        if (ImGui.TreeNode("Edit wormhole text per number (current language)"))
         {
-            for (var i = 0; i < 8; i++)
+            var th = Loc.Thai && _fonts.ThaiAvailable;
+            var enterArr = th ? _cfg.WormholeEnterTh : _cfg.WormholeEnter;
+            var afterArr = th ? _cfg.WormholeAfterTh : _cfg.WormholeAfter;
+            using (th ? _fonts.PushThaiUi() : null)
             {
-                var enter = _cfg.WormholeEnter[i];
-                if (ImGui.InputText($"#{i + 1} enter##we{i}", ref enter, 256)) { _cfg.WormholeEnter[i] = enter; changed = true; }
-                var after = _cfg.WormholeAfter[i];
-                if (ImGui.InputText($"#{i + 1} after##wa{i}", ref after, 256)) { _cfg.WormholeAfter[i] = after; changed = true; }
+                for (var i = 0; i < 8; i++)
+                {
+                    var enter = enterArr[i];
+                    if (ImGui.InputText($"#{i + 1} enter##we{i}", ref enter, 256)) { enterArr[i] = enter; changed = true; }
+                    var after = afterArr[i];
+                    if (ImGui.InputText($"#{i + 1} after##wa{i}", ref after, 256)) { afterArr[i] = after; changed = true; }
+                }
             }
             ImGui.TreePop();
         }

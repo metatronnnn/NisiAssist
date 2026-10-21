@@ -57,25 +57,25 @@ public sealed class WormholeWindow : Window, IDisposable
         var n = _cfg.WormholeNumber;
         var now = _tracker.WormholePuddle;   // puddle being cast right now (0 = none)
 
-        ImGui.TextColored(White, "WORMHOLE");
-        ImGui.TextColored(Grey, "Puddles: #1 = 5,6  |  #2 = 7,8  |  #3 = 1,2  |  3,4 none");
+        ImGui.TextColored(White, Loc.WormholeTitle);
+        ImGui.TextColored(Grey, Loc.PuddleOrder);
 
         if (n < 1 || n > 8)
         {
-            ImGui.TextColored(Yellow, "Pick your number:");
+            ImGui.TextColored(Yellow, Loc.PickNumber);
         }
         else
         {
-            ImGui.TextColored(Cyan, $"#{n}  {Line(_cfg.WormholeEnter, n)}");
-            ImGui.TextColored(White, $"After: {Line(_cfg.WormholeAfter, n)}");
+            ImGui.TextColored(Cyan, $"#{n}  {Line(Loc.Thai ? _cfg.WormholeEnterTh : _cfg.WormholeEnter, n)}");
+            ImGui.TextColored(White, Loc.After(Line(Loc.Thai ? _cfg.WormholeAfterTh : _cfg.WormholeAfter, n)));
 
             var mine = NisiTracker.PuddleFor(n);
             if (now != 0)
             {
                 if (now == mine)
-                    ImGui.TextColored(Green, $">> SOAK PUDDLE #{now} NOW <<");
+                    ImGui.TextColored(Green, Loc.SoakNow(now));
                 else
-                    ImGui.TextColored(Grey, $"Puddle #{now} now (not yours)");
+                    ImGui.TextColored(Grey, Loc.PuddleNotMine(now));
             }
         }
 

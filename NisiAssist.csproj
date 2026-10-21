@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Dalamud.NET.Sdk/15.0.0">
   <PropertyGroup>
-    <Version>0.3.0.0</Version>
+    <Version>0.4.0.0</Version>
     <Author>Sith</Author>
     <Name>Nisi Assist</Name>
     <Punchline>TEA phase 2: tells you who to swap Judgment Nisi with on passes 3 and 4.</Punchline>
@@ -13,6 +13,6 @@ Logic and timings are derived from the Cactbot TEA triggers/timeline.</Descripti
   </PropertyGroup>
   <ItemGroup>
     <None Include="images\icon.png" CopyToOutputDirectory="PreserveNewest" Link="images\icon.png" />
-    <None Include="icons\*.png" CopyToOutputDirectory="PreserveNewest" Link="icons\%(Filename)%(Extension)" />
+    <None Include="icons\*.*" CopyToOutputDirectory="PreserveNewest" Link="icons\%(Filename)%(Extension)" />
   </ItemGroup>
 </Project>

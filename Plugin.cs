@@ -34,9 +34,10 @@ public sealed class Plugin : IDalamudPlugin
         Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 
         _tracker = new NisiTracker(ObjectTable, PartyList, Condition, Configuration);
+        Loc.Thai = Configuration.Language == 1;
         _fonts = new Fonts(PluginInterface);
         var icons = new Icons(TextureProvider, PluginInterface);
-        _configWindow = new ConfigWindow(Configuration, _tracker);
+        _configWindow = new ConfigWindow(Configuration, _tracker, _fonts);
         _overlay = new OverlayWindow(Configuration, _tracker, icons, _fonts);
 
         _windows.AddWindow(_configWindow);

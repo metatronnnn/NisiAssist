@@ -8,6 +8,8 @@ public sealed class Configuration : IPluginConfiguration
 {
     public int Version { get; set; } = 1;
 
+    public int Language { get; set; } = 0;                // 0 = English, 1 = Thai
+
     // ---- display ----
     public bool OverlayLocked { get; set; } = false;
     public bool ShowIcons { get; set; } = true;
@@ -54,6 +56,29 @@ public sealed class Configuration : IPluginConfiguration
         "Knockback charge: face MIDDLE. E/W cardinals safe after chakrams",
         "Knockback cleave: face OUTSIDE. E/W cardinals safe after chakrams",
         "Knockback charge: face MIDDLE. E/W cardinals safe after chakrams",
+    };
+
+    public string[] WormholeEnterTh { get; set; } =
+    {
+        "ซ้ายของหุ่น หันออกนอก รับก้อน #3",
+        "หลังขวา (ตรงข้ามหุ่น) หันเข้ากลาง รับก้อน #3",
+        "หลังซ้าย (ตรงข้ามหุ่น) ไม่รับก้อน",
+        "ขวาของหุ่น ไม่รับก้อน",
+        "ข้างหุ่นฝั่งซ้าย รับก้อน #1",
+        "ข้างหุ่นฝั่งขวา รับก้อน #1",
+        "ข้างหุ่นฝั่งซ้าย แล้วไปทิศหลัก รับก้อน #2",
+        "ข้างหุ่นฝั่งขวา แล้วไปทิศหลัก รับก้อน #2",
+    };
+    public string[] WormholeAfterTh { get; set; } =
+    {
+        "น็อกแบ็ก cleave: หันออกนอก ทิศตะวันออก/ตะวันตกปลอดภัยหลังจักรผ่าน",
+        "น็อกแบ็ก charge: หันเข้ากลาง อาจต้องไปหลัง Brute Justice ตอน Super Jump",
+        "น็อกแบ็ก cleave: หันออกนอก อาจต้องไปหลัง Brute Justice ตอน Super Jump",
+        "น็อกแบ็ก charge: หันเข้ากลาง ทิศตะวันออก/ตะวันตกปลอดภัยหลังจักรผ่าน",
+        "น็อกแบ็ก cleave: หันออกนอก ทิศตะวันออก/ตะวันตกปลอดภัยหลังจักรผ่าน",
+        "น็อกแบ็ก charge: หันเข้ากลาง ทิศตะวันออก/ตะวันตกปลอดภัยหลังจักรผ่าน",
+        "น็อกแบ็ก cleave: หันออกนอก ทิศตะวันออก/ตะวันตกปลอดภัยหลังจักรผ่าน",
+        "น็อกแบ็ก charge: หันเข้ากลาง ทิศตะวันออก/ตะวันตกปลอดภัยหลังจักรผ่าน",
     };
 
     // ---- timing (seconds) ----

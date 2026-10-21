@@ -77,12 +77,12 @@ public sealed class OverlayWindow : Window, IDisposable
         ImGui.SetWindowFontScale(fontScale);
 
         // Header: which pass + countdown of the window
-        var header = g.Phase == PassPhase.Active ? $"NISI PASS {g.Pass}" : $"NISI PASS {g.Pass} - next";
+        var header = Loc.PassHeader(g.Pass, g.Phase == PassPhase.Active);
         if (_cfg.ShowCountdown)
         {
             header += g.Phase == PassPhase.Active
-                ? $"   {g.SecondsLeft:0.0}s"
-                : $"   in {g.SecondsToStart:0.0}s";
+                ? $"   {Loc.Left(g.SecondsLeft)}"
+                : $"   {Loc.InSeconds(g.SecondsToStart)}";
         }
         ImGui.TextColored(g.Phase == PassPhase.Active ? White : Grey, header);
 
@@ -93,20 +93,20 @@ public sealed class OverlayWindow : Window, IDisposable
             {
                 var col = NisiColor(g.NisiIndex);
                 NisiIcon(g.NisiIndex);
-                var who = g.Partners.Count > 0 ? string.Join(", ", g.Partners) : "(partner not found)";
-                ImGui.TextColored(col, $"PASS {NisiTracker.NisiName(g.NisiIndex)} -> {who}");
+                var who = g.Partners.Count > 0 ? string.Join(", ", g.Partners) : Loc.PartnerNotFound;
+                ImGui.TextColored(col, Loc.Pass(NisiTracker.NisiName(g.NisiIndex), who));
                 break;
             }
             case "GET":
             {
                 var col = NisiColor(g.NisiIndex);
                 NisiIcon(g.NisiIndex);
-                var who = g.Partners.Count > 0 ? string.Join(", ", g.Partners) : "(holder not found)";
-                ImGui.TextColored(col, $"GET {NisiTracker.NisiName(g.NisiIndex)} <- {who}");
+                var who = g.Partners.Count > 0 ? string.Join(", ", g.Partners) : Loc.HolderNotFound;
+                ImGui.TextColored(col, Loc.Get(NisiTracker.NisiName(g.NisiIndex), who));
                 break;
             }
             default:
-                ImGui.TextColored(Red, "No verdict debuff on you (?)");
+                ImGui.TextColored(Red, Loc.NoVerdict);
                 break;
         }
 
@@ -115,7 +115,7 @@ public sealed class OverlayWindow : Window, IDisposable
         {
             NisiIcon(g.MyHeld);
             ImGui.TextColored(NisiColor(g.MyHeld),
-                $"Holding {NisiTracker.NisiName(g.MyHeld)}: {g.MyHeldRemaining:0.0}s left");
+                Loc.Holding(NisiTracker.NisiName(g.MyHeld), g.MyHeldRemaining));
         }
 
         // Optional party table (off by default: "only me" mode)
@@ -127,7 +127,7 @@ public sealed class OverlayWindow : Window, IDisposable
                 var held = p.Held >= 0 ? NisiTracker.NisiName(p.Held) : "-";
                 var verdict = _tracker.Verdicts.TryGetValue(p.Id, out var v) ? NisiTracker.NisiName(v) : "-";
                 ImGui.TextColored(p.Held >= 0 ? NisiColor(p.Held) : Grey,
-                    $"{p.Name}  hold: {held}  need: {verdict}");
+                    Loc.PartyLine(p.Name, held, verdict));
             }
         }
     }
