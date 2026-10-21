@@ -34,10 +34,10 @@ public sealed class Plugin : IDalamudPlugin
         Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 
         _tracker = new NisiTracker(ObjectTable, PartyList, Condition, Configuration);
-        if (Configuration.Version < 2)
+        if (Configuration.Version < 3)
         {
             Configuration.ResetWormholeText();   // old saved text came from an earlier default layout
-            Configuration.Version = 2;
+            Configuration.Version = 3;
             Configuration.Save();
         }
         Loc.WantThai = Configuration.Language == 1;

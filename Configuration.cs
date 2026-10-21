@@ -6,7 +6,7 @@ namespace NisiAssist;
 [Serializable]
 public sealed class Configuration : IPluginConfiguration
 {
-    public int Version { get; set; } = 2;
+    public int Version { get; set; } = 3;
 
     public int Language { get; set; } = 0;                // 0 = English, 1 = Thai
 
@@ -26,7 +26,7 @@ public sealed class Configuration : IPluginConfiguration
     public bool ShowDebuffCountdown { get; set; } = true;
     public float DebuffCountdownSeconds { get; set; } = 5.0f;   // start showing when this many seconds remain
     public float CountdownFontScale { get; set; } = 7.0f;       // (old, unused since 0.2.1)
-    public float CountdownSize { get; set; } = 120f;            // height of the big number in pixels
+    public float CountdownSize { get; set; } = 220f;            // height of the big number in pixels
     public bool DebuffSoundEnabled { get; set; } = true;
     public int DebuffTickSound { get; set; } = 2;               // in-game chat sound effect <se.N> (1-16), played every second
     public int DebuffFinalSound { get; set; } = 6;              // played on the last second
@@ -66,15 +66,15 @@ public sealed class Configuration : IPluginConfiguration
         "เริ่มที่มุมตะวันออกเฉียงเหนือ (NE) (คู่กับเลข 6)",
         "เริ่มที่มุมตะวันตกเฉียงใต้ (SW) (คู่กับเลข 7) ไม่ต้องรีบหลบ",
         "เริ่มที่มุมตะวันออกเฉียงใต้ (SE) (คู่กับเลข 8) ไม่ต้องรีบหลบ",
-        "ไปบ่อทางตะวันตก รอบที่ 1 ก่อน",
-        "ไปบ่อทางตะวันออก รอบที่ 1 ก่อน",
-        "ไปบ่อทางตะวันตก รอบที่ 2 ก่อน",
-        "ไปบ่อทางตะวันออก รอบที่ 2 ก่อน",
+        "ไปรูหนอนทางตะวันตก รอบที่ 1 ก่อน",
+        "ไปรูหนอนทางตะวันออก รอบที่ 1 ก่อน",
+        "ไปรูหนอนทางตะวันตก รอบที่ 2 ก่อน",
+        "ไปรูหนอนทางตะวันออก รอบที่ 2 ก่อน",
     };
     public string[] WormholeAfterTh { get; set; } =
     {
-        "จากนั้นไปบ่อตะวันตก รอบที่ 3 ถึงคิวของคุณ: หันออกนอก ถ้า BJ อยู่ตรงหน้า ยืนนิ่งจน Apocalyptic Ray จบ",
-        "จากนั้นไปบ่อตะวันออก รอบที่ 3 ถึงคิวของคุณ: หันเข้ากลาง ถ้า BJ อยู่ตรงหน้า ยืนนิ่งจน Apocalyptic Ray จบ",
+        "จากนั้นไปรูหนอนตะวันตก รอบที่ 3 ถึงคิวของคุณ: หันออกนอก ถ้า BJ อยู่ตรงหน้า ยืนนิ่งจน Apocalyptic Ray จบ",
+        "จากนั้นไปรูหนอนตะวันออก รอบที่ 3 ถึงคิวของคุณ: หันเข้ากลาง ถ้า BJ อยู่ตรงหน้า ยืนนิ่งจน Apocalyptic Ray จบ",
         "หลังลูกเต๋าจบ ไปข้างสนาม (9 นาฬิกา) ถึงคิวของคุณ: หันออกนอก BJ อาจกระโดดใส่",
         "หลังลูกเต๋าจบ ไปข้างสนาม (3 นาฬิกา) ถึงคิวของคุณ: หันเข้ากลาง BJ อาจกระโดดใส่",
         "จากนั้นไปวงแดง NW (ลูกเต๋า) ถึงคิวของคุณ: หันออกนอก",

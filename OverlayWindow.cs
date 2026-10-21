@@ -78,13 +78,16 @@ public sealed class OverlayWindow : Window, IDisposable
 
         // Header: which pass + countdown of the window
         var header = Loc.PassHeader(g.Pass, g.Phase == PassPhase.Active);
+        var active = g.Phase == PassPhase.Active;
+        ImGui.TextColored(active ? White : Grey, header);
         if (_cfg.ShowCountdown)
         {
-            header += g.Phase == PassPhase.Active
-                ? $"   {Loc.Left(g.SecondsLeft)}"
-                : $"   {Loc.InSeconds(g.SecondsToStart)}";
+            // Pass timer on its own line, drawn much larger than the body text
+            var timer = active ? Loc.Left(g.SecondsLeft) : Loc.InSeconds(g.SecondsToStart);
+            ImGui.SetWindowFontScale(fontScale * 2.4f);
+            ImGui.TextColored(active ? White : Grey, timer);
+            ImGui.SetWindowFontScale(fontScale);
         }
-        ImGui.TextColored(g.Phase == PassPhase.Active ? White : Grey, header);
 
         // Main instruction
         switch (g.Action)

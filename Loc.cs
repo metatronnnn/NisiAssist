@@ -30,10 +30,10 @@ public static class Loc
     public static string Lightning => T("LIGHTNING", "สายฟ้า");
 
     public static string WormholeTitle => "WORMHOLE";
-    public static string PuddleOrder => T("Puddles: #1 = 5,6  |  #2 = 7,8  |  #3 = 1,2  |  3,4 none", "ก้อนน้ำ: #1 = 5,6  |  #2 = 7,8  |  #3 = 1,2  |  3,4 ไม่รับ");
+    public static string PuddleOrder => T("Puddles: #1 = 5,6  |  #2 = 7,8  |  #3 = 1,2  |  3,4 none", "รูหนอน: #1 = 5,6  |  #2 = 7,8  |  #3 = 1,2  |  3,4 ไม่รับ");
     public static string PickNumber => T("Pick your number:", "เลือกเลขของคุณ:");
     public static string After(string text) => T($"After: {text}", $"หลังจากนั้น: {text}");
     public static string Then(string text) => T($"Then: {text}", $"ต่อไป: {text}");
-    public static string SoakNow(int n) => T($">> SOAK PUDDLE #{n} NOW <<", $">> เข้ารับก้อนที่ {n} เดี๋ยวนี้ <<");
-    public static string PuddleNotMine(int n) => T($"Puddle #{n} now (not yours)", $"ก้อนที่ {n} กำลังมา (ไม่ใช่ของคุณ)");
+    public static string SoakNow(int n) => T($">> SOAK PUDDLE #{n} NOW <<", $">> เข้ารูหนอนที่ {n} เดี๋ยวนี้ <<");
+    public static string PuddleNotMine(int n) => T($"Puddle #{n} now (not yours)", $"รูหนอนที่ {n} กำลังมา (ไม่ใช่ของคุณ)");
 }
