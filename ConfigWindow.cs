@@ -35,11 +35,13 @@ public sealed class ConfigWindow : Window, IDisposable
 
         ImGui.TextUnformatted("Language:");
         ImGui.SameLine();
-        if (ImGui.RadioButton("English", _cfg.Language == 0)) { _cfg.Language = 0; Loc.Thai = false; changed = true; }
+        if (ImGui.RadioButton("English", _cfg.Language == 0)) { _cfg.Language = 0; Loc.WantThai = false; changed = true; }
         ImGui.SameLine();
-        if (ImGui.RadioButton("Thai", _cfg.Language == 1)) { _cfg.Language = 1; Loc.Thai = true; changed = true; }
-        if (_cfg.Language == 1 && !_fonts.ThaiAvailable)
-            ImGui.TextColored(new Vector4(1f, 0.5f, 0.4f, 1f), "Thai font file not found (icons/Sarabun-Regular.ttf) - showing English");
+        if (ImGui.RadioButton("Thai", _cfg.Language == 1)) { _cfg.Language = 1; Loc.WantThai = true; changed = true; }
+        if (_cfg.Language == 1 && !Loc.Thai)
+            ImGui.TextColored(new Vector4(1f, 0.5f, 0.4f, 1f), _fonts.ThaiAvailable
+                ? "Thai font is still loading - showing English"
+                : "Thai font failed to load - showing English");
 
         ImGui.Separator();
         ImGui.TextUnformatted("Display");
@@ -80,7 +82,7 @@ public sealed class ConfigWindow : Window, IDisposable
             _tracker.WormholeManual = whManual;
         if (ImGui.TreeNode("Edit wormhole text per number (current language)"))
         {
-            var th = Loc.Thai && _fonts.ThaiAvailable;
+            var th = Loc.Thai;
             var enterArr = th ? _cfg.WormholeEnterTh : _cfg.WormholeEnter;
             var afterArr = th ? _cfg.WormholeAfterTh : _cfg.WormholeAfter;
             using (th ? _fonts.PushThaiUi() : null)

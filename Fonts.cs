@@ -33,22 +33,21 @@ public sealed class Fonts : IDisposable
         _big = atlas.NewGameFontHandle(new GameFontStyle(GameFontFamilyAndSize.Axis96));
         _digits = atlas.NewGameFontHandle(new GameFontStyle(GameFontFamilyAndSize.TrumpGothic184));
 
-        // Thai-capable font (Sarabun, SIL OFL) shipped next to the DLL in the "icons" folder.
-        var thaiPath = Path.Combine(pi.AssemblyLocation.DirectoryName ?? "", "icons", "Sarabun-Regular.ttf");
-        if (File.Exists(thaiPath))
+        // Thai-capable font (Sarabun, SIL OFL), embedded in the DLL (ThaiFontData.cs).
         {
-            _thaiSmall = MakeThai(atlas, thaiPath, AxisSmallPx);
-            _thaiBig = MakeThai(atlas, thaiPath, AxisBigPx);
-            _thaiUi = MakeThai(atlas, thaiPath, DefaultImGuiPx);
+            _thaiSmall = MakeThai(atlas, AxisSmallPx);
+            _thaiBig = MakeThai(atlas, AxisBigPx);
+            _thaiUi = MakeThai(atlas, DefaultImGuiPx);
+            Loc.ThaiReady = () => _thaiSmall is { Available: true } && _thaiBig is { Available: true };
         }
     }
 
     // Basic Latin + Latin-1 + Thai block. Range list is pairs of code points, terminated by 0.
     private static readonly ushort[] ThaiRanges = { 0x0020, 0x00FF, 0x0E01, 0x0E5B, 0 };
 
-    private static IFontHandle MakeThai(IFontAtlas atlas, string path, float sizePx) =>
+    private static IFontHandle MakeThai(IFontAtlas atlas, float sizePx) =>
         atlas.NewDelegateFontHandle(e => e.OnPreBuild(tk =>
-            tk.AddFontFromFile(path, new SafeFontConfig { SizePx = sizePx, GlyphRanges = ThaiRanges })));
+            tk.AddFontFromMemory(ThaiFontData.Bytes, new SafeFontConfig { SizePx = sizePx, GlyphRanges = ThaiRanges }, "NisiAssist Thai")));
 
     public bool ThaiAvailable => _thaiSmall != null;
 
