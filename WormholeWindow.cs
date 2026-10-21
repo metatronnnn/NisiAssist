@@ -69,6 +69,8 @@ public sealed class WormholeWindow : Window, IDisposable
             ImGui.TextColored(Cyan, $"#{n}  {Line(Loc.Thai ? _cfg.WormholeEnterTh : _cfg.WormholeEnter, n)}");
             ImGui.TextColored(White, Loc.After(Line(Loc.Thai ? _cfg.WormholeAfterTh : _cfg.WormholeAfter, n)));
 
+            ImGui.TextColored(Grey, Loc.Then(Loc.Thai ? _cfg.WormholeFooterTh : _cfg.WormholeFooter));
+
             var mine = NisiTracker.PuddleFor(n);
             if (now != 0)
             {

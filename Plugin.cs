@@ -34,6 +34,12 @@ public sealed class Plugin : IDalamudPlugin
         Configuration = PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
 
         _tracker = new NisiTracker(ObjectTable, PartyList, Condition, Configuration);
+        if (Configuration.Version < 2)
+        {
+            Configuration.ResetWormholeText();   // old saved text came from an earlier default layout
+            Configuration.Version = 2;
+            Configuration.Save();
+        }
         Loc.Thai = Configuration.Language == 1;
         _fonts = new Fonts(PluginInterface);
         var icons = new Icons(TextureProvider, PluginInterface);

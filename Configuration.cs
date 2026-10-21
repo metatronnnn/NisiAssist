@@ -6,7 +6,7 @@ namespace NisiAssist;
 [Serializable]
 public sealed class Configuration : IPluginConfiguration
 {
-    public int Version { get; set; } = 1;
+    public int Version { get; set; } = 2;
 
     public int Language { get; set; } = 0;                // 0 = English, 1 = Thai
 
@@ -32,54 +32,58 @@ public sealed class Configuration : IPluginConfiguration
     public int DebuffFinalSound { get; set; } = 6;              // played on the last second
 
     // ---- wormhole (phase 3 part 2) ----
-    // Defaults follow Cactbot's "Wormhole" strat (TPS-based): 1-8 = Limit Cut number. Edit the text in /nisi to match your own strat.
+    // Defaults follow the Nukemaru-style wormhole (corner / puddle layout). 1-8 = your Limit Cut number.
+    // Edit the text in /nisi to match your own strat.
     public bool ShowWormhole { get; set; } = true;
     public int WormholeNumber { get; set; } = 0;           // 0 = not set yet
     public string[] WormholeEnter { get; set; } =
     {
-        "Left of robot, look OUTSIDE. Puddle #3",
-        "Back right (opposite robot), look MIDDLE. Puddle #3",
-        "Back left (opposite robot). No puddle",
-        "Right of robot. No puddle",
-        "Left robot side. Puddle #1",
-        "Right robot side. Puddle #1",
-        "Left robot side, then cardinal. Puddle #2",
-        "Right robot side, then cardinal. Puddle #2",
+        "Start NW corner (with 5).",
+        "Start NE corner (with 6).",
+        "Start SW corner (with 7). Don't dodge in a hurry.",
+        "Start SE corner (with 8). Don't dodge in a hurry.",
+        "WEST puddle #1 first.",
+        "EAST puddle #1 first.",
+        "WEST puddle #2 first.",
+        "EAST puddle #2 first.",
     };
     public string[] WormholeAfter { get; set; } =
     {
-        "Knockback cleave: face OUTSIDE. E/W cardinals safe after chakrams",
-        "Knockback charge: face MIDDLE. Maybe move behind Brute Justice at super jump",
-        "Knockback cleave: face OUTSIDE. Maybe move behind Brute Justice at super jump",
-        "Knockback charge: face MIDDLE. E/W cardinals safe after chakrams",
-        "Knockback cleave: face OUTSIDE. E/W cardinals safe after chakrams",
-        "Knockback charge: face MIDDLE. E/W cardinals safe after chakrams",
-        "Knockback cleave: face OUTSIDE. E/W cardinals safe after chakrams",
-        "Knockback charge: face MIDDLE. E/W cardinals safe after chakrams",
+        "Then WEST puddle #3. Your turn: face OUTSIDE. BJ in front of you? Stand still until Apocalyptic Ray ends.",
+        "Then EAST puddle #3. Your turn: face MIDDLE. BJ in front of you? Stand still until Apocalyptic Ray ends.",
+        "After the dice, go to the side (9 o'clock). Your turn: face OUTSIDE. BJ may jump on you.",
+        "After the dice, go to the side (3 o'clock). Your turn: face MIDDLE. BJ may jump on you.",
+        "Then NW red circle (dice). Your turn: face OUTSIDE.",
+        "Then NE red circle (dice). Your turn: face MIDDLE.",
+        "Then SW red circle (dice). Your turn: face OUTSIDE.",
+        "Then SE red circle (dice). Your turn: face MIDDLE.",
     };
-
+    public string WormholeFooter { get; set; } =
+        "Stack in the middle -> Enumeration: tanks north, healers south, count DPS go by priority D1>D2>D3>D4 (north first), DPS without a count stay out -> Mega Holy x2";
     public string[] WormholeEnterTh { get; set; } =
     {
-        "ซ้ายของหุ่น หันออกนอก รับก้อน #3",
-        "หลังขวา (ตรงข้ามหุ่น) หันเข้ากลาง รับก้อน #3",
-        "หลังซ้าย (ตรงข้ามหุ่น) ไม่รับก้อน",
-        "ขวาของหุ่น ไม่รับก้อน",
-        "ข้างหุ่นฝั่งซ้าย รับก้อน #1",
-        "ข้างหุ่นฝั่งขวา รับก้อน #1",
-        "ข้างหุ่นฝั่งซ้าย แล้วไปทิศหลัก รับก้อน #2",
-        "ข้างหุ่นฝั่งขวา แล้วไปทิศหลัก รับก้อน #2",
+        "เริ่มที่มุมตะวันตกเฉียงเหนือ (NW) (คู่กับเลข 5)",
+        "เริ่มที่มุมตะวันออกเฉียงเหนือ (NE) (คู่กับเลข 6)",
+        "เริ่มที่มุมตะวันตกเฉียงใต้ (SW) (คู่กับเลข 7) ไม่ต้องรีบหลบ",
+        "เริ่มที่มุมตะวันออกเฉียงใต้ (SE) (คู่กับเลข 8) ไม่ต้องรีบหลบ",
+        "ไปบ่อทางตะวันตก รอบที่ 1 ก่อน",
+        "ไปบ่อทางตะวันออก รอบที่ 1 ก่อน",
+        "ไปบ่อทางตะวันตก รอบที่ 2 ก่อน",
+        "ไปบ่อทางตะวันออก รอบที่ 2 ก่อน",
     };
     public string[] WormholeAfterTh { get; set; } =
     {
-        "น็อกแบ็ก cleave: หันออกนอก ทิศตะวันออก/ตะวันตกปลอดภัยหลังจักรผ่าน",
-        "น็อกแบ็ก charge: หันเข้ากลาง อาจต้องไปหลัง Brute Justice ตอน Super Jump",
-        "น็อกแบ็ก cleave: หันออกนอก อาจต้องไปหลัง Brute Justice ตอน Super Jump",
-        "น็อกแบ็ก charge: หันเข้ากลาง ทิศตะวันออก/ตะวันตกปลอดภัยหลังจักรผ่าน",
-        "น็อกแบ็ก cleave: หันออกนอก ทิศตะวันออก/ตะวันตกปลอดภัยหลังจักรผ่าน",
-        "น็อกแบ็ก charge: หันเข้ากลาง ทิศตะวันออก/ตะวันตกปลอดภัยหลังจักรผ่าน",
-        "น็อกแบ็ก cleave: หันออกนอก ทิศตะวันออก/ตะวันตกปลอดภัยหลังจักรผ่าน",
-        "น็อกแบ็ก charge: หันเข้ากลาง ทิศตะวันออก/ตะวันตกปลอดภัยหลังจักรผ่าน",
+        "จากนั้นไปบ่อตะวันตก รอบที่ 3 ถึงคิวของคุณ: หันออกนอก ถ้า BJ อยู่ตรงหน้า ยืนนิ่งจน Apocalyptic Ray จบ",
+        "จากนั้นไปบ่อตะวันออก รอบที่ 3 ถึงคิวของคุณ: หันเข้ากลาง ถ้า BJ อยู่ตรงหน้า ยืนนิ่งจน Apocalyptic Ray จบ",
+        "หลังลูกเต๋าจบ ไปข้างสนาม (9 นาฬิกา) ถึงคิวของคุณ: หันออกนอก BJ อาจกระโดดใส่",
+        "หลังลูกเต๋าจบ ไปข้างสนาม (3 นาฬิกา) ถึงคิวของคุณ: หันเข้ากลาง BJ อาจกระโดดใส่",
+        "จากนั้นไปวงแดง NW (ลูกเต๋า) ถึงคิวของคุณ: หันออกนอก",
+        "จากนั้นไปวงแดง NE (ลูกเต๋า) ถึงคิวของคุณ: หันเข้ากลาง",
+        "จากนั้นไปวงแดง SW (ลูกเต๋า) ถึงคิวของคุณ: หันออกนอก",
+        "จากนั้นไปวงแดง SE (ลูกเต๋า) ถึงคิวของคุณ: หันเข้ากลาง",
     };
+    public string WormholeFooterTh { get; set; } =
+        "รวมกลางรับ stack -> Enumeration: แท็งก์อยู่เหนือ ฮีลเลอร์อยู่ใต้ DPS ที่ได้วงนับเรียงลำดับ D1>D2>D3>D4 (ไปเหนือก่อน) DPS ที่ไม่ได้วงหลบออกข้าง -> Mega Holy 2 ครั้ง";
 
     // ---- timing (seconds) ----
     // All defaults come from Cactbot's TEA triggers + timeline (nominal values; tweak if your group's pull is faster/slower).
@@ -92,6 +96,14 @@ public sealed class Configuration : IPluginConfiguration
     // Timeline: Flarethrower resolves at 315.5s, Propeller Wind at 354.5s -> 39.0s apart.
     // Used until the real Propeller Wind cast is seen (which then gives the exact time).
     public float PropellerAfterFlarethrower { get; set; } = 39.0f;
+
+    /// <summary>Copies the default wormhole texts (used when upgrading from an older saved config).</summary>
+    public void ResetWormholeText()
+    {
+        var d = new Configuration();
+        WormholeEnter = d.WormholeEnter; WormholeAfter = d.WormholeAfter; WormholeFooter = d.WormholeFooter;
+        WormholeEnterTh = d.WormholeEnterTh; WormholeAfterTh = d.WormholeAfterTh; WormholeFooterTh = d.WormholeFooterTh;
+    }
 
     public void Save() => Plugin.PluginInterface.SavePluginConfig(this);
 }
