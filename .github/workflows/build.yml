@@ -32,6 +32,8 @@ jobs:
       - name: Package latest.zip
         run: |
           cd bin/Release
+          RAWICON="https://raw.githubusercontent.com/${{ github.repository }}/main/images/icon.png"
+          jq --arg icon "$RAWICON" --arg repo "https://github.com/${{ github.repository }}" '. + {IconUrl: $icon, RepoUrl: $repo}' NisiAssist.json > m.tmp && mv m.tmp NisiAssist.json
           test -f NisiAssist.json || { echo "NisiAssist.json manifest not found"; ls; exit 1; }
           zip -r ../../latest.zip NisiAssist.dll NisiAssist.json NisiAssist.deps.json images icons
 
