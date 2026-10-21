@@ -40,7 +40,7 @@ public sealed class Plugin : IDalamudPlugin
             Configuration.Version = 2;
             Configuration.Save();
         }
-        Loc.Thai = Configuration.Language == 1;
+        Loc.WantThai = Configuration.Language == 1;
         _fonts = new Fonts(PluginInterface);
         var icons = new Icons(TextureProvider, PluginInterface);
         _configWindow = new ConfigWindow(Configuration, _tracker, _fonts);

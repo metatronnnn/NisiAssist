@@ -3,7 +3,14 @@ namespace NisiAssist;
 /// <summary>Tiny English/Thai switch for overlay text. Language is set from the config.</summary>
 public static class Loc
 {
-    public static bool Thai { get; set; }
+    /// <summary>What the user selected in settings.</summary>
+    public static bool WantThai { get; set; }
+
+    /// <summary>Set by Fonts: true only when the Thai font has really been loaded.</summary>
+    public static System.Func<bool>? ThaiReady { get; set; }
+
+    /// <summary>Thai is used only when selected AND the Thai font is ready; otherwise everything falls back to English (no "=" boxes).</summary>
+    public static bool Thai => WantThai && (ThaiReady?.Invoke() ?? false);
 
     private static string T(string en, string th) => Thai ? th : en;
 
