@@ -61,6 +61,26 @@ public sealed class ConfigWindow : Window, IDisposable
         if (ImGui.SliderInt("Last-second sound (<se.N>)", ref fin, 1, 16)) { _cfg.DebuffFinalSound = fin; changed = true; }
 
         ImGui.Separator();
+        ImGui.TextUnformatted("Wormhole (phase 3 part 2) - your Limit Cut number 1-8");
+        changed |= Check("Show wormhole guide", _cfg.ShowWormhole, v => _cfg.ShowWormhole = v);
+        var whNum = _cfg.WormholeNumber;
+        if (ImGui.SliderInt("My number (0 = not set)", ref whNum, 0, 8)) { _cfg.WormholeNumber = whNum; changed = true; }
+        var whManual = _tracker.WormholeManual;
+        if (ImGui.Checkbox("Show wormhole guide now (manual)", ref whManual))
+            _tracker.WormholeManual = whManual;
+        if (ImGui.TreeNode("Edit wormhole text per number"))
+        {
+            for (var i = 0; i < 8; i++)
+            {
+                var enter = _cfg.WormholeEnter[i];
+                if (ImGui.InputText($"#{i + 1} enter##we{i}", ref enter, 256)) { _cfg.WormholeEnter[i] = enter; changed = true; }
+                var after = _cfg.WormholeAfter[i];
+                if (ImGui.InputText($"#{i + 1} after##wa{i}", ref after, 256)) { _cfg.WormholeAfter[i] = after; changed = true; }
+            }
+            ImGui.TreePop();
+        }
+
+        ImGui.Separator();
         ImGui.TextUnformatted("Timing (seconds, from Cactbot nominal values)");
 
         changed |= Slider("Early notice lead", _cfg.UpcomingLead, 0f, 15f, v => _cfg.UpcomingLead = v);

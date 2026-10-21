@@ -27,6 +27,7 @@ public sealed class Plugin : IDalamudPlugin
     private readonly ConfigWindow _configWindow;
     private readonly OverlayWindow _overlay;
     private readonly CountdownWindow _countdown;
+    private readonly WormholeWindow _wormhole;
 
     public Plugin()
     {
@@ -42,10 +43,12 @@ public sealed class Plugin : IDalamudPlugin
         _windows.AddWindow(_overlay);
         _countdown = new CountdownWindow(Configuration, _tracker, icons, _fonts);
         _windows.AddWindow(_countdown);
+        _wormhole = new WormholeWindow(Configuration, _tracker, _fonts);
+        _windows.AddWindow(_wormhole);
 
         CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
         {
-            HelpMessage = "/nisi = settings, /nisi preview = toggle preview overlay, /nisi lock = lock/unlock overlay",
+            HelpMessage = "/nisi = settings, /nisi preview = toggle preview overlay, /nisi lock = lock/unlock overlay, /nisi wh [1-8] = wormhole guide",
         });
 
         Framework.Update += OnUpdate;
@@ -67,6 +70,7 @@ public sealed class Plugin : IDalamudPlugin
         _configWindow.Dispose();
         _overlay.Dispose();
         _countdown.Dispose();
+        _wormhole.Dispose();
         _fonts.Dispose();
     }
 
@@ -85,7 +89,24 @@ public sealed class Plugin : IDalamudPlugin
 
     private void OnCommand(string command, string args)
     {
-        switch (args.Trim().ToLowerInvariant())
+        var arg = args.Trim().ToLowerInvariant();
+        if (arg == "wh" || arg.StartsWith("wh "))
+        {
+            var rest = arg.Length > 2 ? arg.Substring(3).Trim() : "";
+            if (int.TryParse(rest, out var num) && num >= 1 && num <= 8)
+            {
+                Configuration.WormholeNumber = num;
+                Configuration.Save();
+                _tracker.WormholeManual = true;
+            }
+            else
+            {
+                _tracker.WormholeManual = !_tracker.WormholeManual;
+            }
+            return;
+        }
+
+        switch (arg)
         {
             case "preview":
                 _tracker.Preview = !_tracker.Preview;

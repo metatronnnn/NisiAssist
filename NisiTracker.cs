@@ -51,6 +51,11 @@ public sealed class NisiTracker
     private const uint ActJudgmentNisi = 0x483E;  // Brute Justice - applies the Nisi, marks the start of the sequence
     private const uint ActFlarethrower = 0x4845;  // Brute Justice - pass 3 anchor
     private const uint ActPropellerWind = 0x4832; // Cruise Chaser - pass 4 anchor
+    private const uint ActWormholeFormation = 0x486E; // Alexander Prime - phase 3 part 2
+    private const uint ActVoidOfRepentance = 0x4866;
+    private const uint ActRepentance1 = 0x4869;
+    private const uint ActRepentance2 = 0x4868;
+    private const uint ActRepentance3 = 0x4867;
     private const uint ActGavel = 0x483C;         // Brute Justice - after this, Cactbot stops the water/lightning callouts
 
     private readonly IObjectTable _objects;
@@ -77,6 +82,16 @@ public sealed class NisiTracker
     public Guidance? Current { get; private set; }
     public List<DebuffCountdown> Countdowns { get; } = new();
     public bool Preview { get; set; }
+
+    // ---- wormhole ----
+    private double _whUntil = double.NaN;
+    private double _puddleUntil = double.NaN;
+    public bool WormholeManual { get; set; }
+    public int WormholePuddle { get; private set; }   // 1..3 while that Repentance puddle is being cast, else 0
+    public bool WormholeVisible => WormholeManual || Preview || Now() < _whUntil;
+
+    /// <summary>Which Repentance puddle a Limit Cut number soaks (Cactbot wormhole strat): 5,6 -> 1; 7,8 -> 2; 1,2 -> 3; 3,4 -> none.</summary>
+    public static int PuddleFor(int n) => n switch { 5 or 6 => 1, 7 or 8 => 2, 1 or 2 => 3, _ => 0 };
 
     public NisiTracker(IObjectTable objects, IPartyList party, ICondition condition, Configuration cfg)
     {
@@ -123,11 +138,15 @@ public sealed class NisiTracker
                 Reset();
             Current = null;
             Countdowns.Clear();
+            _whUntil = double.NaN;
+            WormholePuddle = 0;
             return;
         }
 
         var t = Now();
         ScanCasts(t);
+        if (WormholePuddle != 0 && t > _puddleUntil)
+            WormholePuddle = 0;
         ScanStatuses();
         UpdateCountdowns();
         Current = BuildCurrent(t);
@@ -177,6 +196,19 @@ public sealed class NisiTracker
                 _p3End = _p3Start + _cfg.Pass3Duration;
                 _propResolve = double.NaN;
                 RecomputePass4(_flareResolve + _cfg.PropellerAfterFlarethrower);
+                break;
+
+            case ActWormholeFormation:
+            case ActVoidOfRepentance:
+                _whUntil = t + 45;
+                break;
+
+            case ActRepentance1:
+            case ActRepentance2:
+            case ActRepentance3:
+                _whUntil = t + 30;
+                WormholePuddle = action == ActRepentance1 ? 1 : action == ActRepentance2 ? 2 : 3;
+                _puddleUntil = resolve + 1.0;
                 break;
 
             case ActGavel when _sequenceActive || _nisiSeen:

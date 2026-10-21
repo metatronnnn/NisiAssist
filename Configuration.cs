@@ -29,6 +29,33 @@ public sealed class Configuration : IPluginConfiguration
     public int DebuffTickSound { get; set; } = 2;               // in-game chat sound effect <se.N> (1-16), played every second
     public int DebuffFinalSound { get; set; } = 6;              // played on the last second
 
+    // ---- wormhole (phase 3 part 2) ----
+    // Defaults follow Cactbot's "Wormhole" strat (TPS-based): 1-8 = Limit Cut number. Edit the text in /nisi to match your own strat.
+    public bool ShowWormhole { get; set; } = true;
+    public int WormholeNumber { get; set; } = 0;           // 0 = not set yet
+    public string[] WormholeEnter { get; set; } =
+    {
+        "Left of robot, look OUTSIDE. Puddle #3",
+        "Back right (opposite robot), look MIDDLE. Puddle #3",
+        "Back left (opposite robot). No puddle",
+        "Right of robot. No puddle",
+        "Left robot side. Puddle #1",
+        "Right robot side. Puddle #1",
+        "Left robot side, then cardinal. Puddle #2",
+        "Right robot side, then cardinal. Puddle #2",
+    };
+    public string[] WormholeAfter { get; set; } =
+    {
+        "Knockback cleave: face OUTSIDE. E/W cardinals safe after chakrams",
+        "Knockback charge: face MIDDLE. Maybe move behind Brute Justice at super jump",
+        "Knockback cleave: face OUTSIDE. Maybe move behind Brute Justice at super jump",
+        "Knockback charge: face MIDDLE. E/W cardinals safe after chakrams",
+        "Knockback cleave: face OUTSIDE. E/W cardinals safe after chakrams",
+        "Knockback charge: face MIDDLE. E/W cardinals safe after chakrams",
+        "Knockback cleave: face OUTSIDE. E/W cardinals safe after chakrams",
+        "Knockback charge: face MIDDLE. E/W cardinals safe after chakrams",
+    };
+
     // ---- timing (seconds) ----
     // All defaults come from Cactbot's TEA triggers + timeline (nominal values; tweak if your group's pull is faster/slower).
     // Pass 3: Cactbot alerts 8s after Brute Justice starts Flarethrower, for 9s.
