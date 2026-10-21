@@ -57,28 +57,44 @@ public sealed class WormholeWindow : Window, IDisposable
         var n = _cfg.WormholeNumber;
         var now = _tracker.WormholePuddle;   // puddle being cast right now (0 = none)
 
-        ImGui.TextColored(White, Loc.WormholeTitle);
-        ImGui.TextColored(Grey, Loc.PuddleOrder);
+        var pos = _cfg.WormholePosition;
+        var myPuddle = _cfg.PuddleOfPosition(pos);
 
-        if (n < 1 || n > 8)
+        ImGui.TextColored(White, Loc.WormholeTitle);
+
+        // ---- Glance line: my position and my puddle, BIG ----
+        if (pos >= 1 && pos <= 8)
         {
-            ImGui.TextColored(Yellow, Loc.PickNumber);
+            ImGui.SetWindowFontScale(fontScale * 2.2f);
+            if (now != 0)
+            {
+                if (myPuddle == now)
+                    ImGui.TextColored(Green, Loc.GoNow(now));
+                else
+                    ImGui.TextColored(Grey, Loc.NotYou(now, _cfg.WhoIn(now)));
+            }
+            else
+            {
+                ImGui.TextColored(myPuddle > 0 ? Cyan : Grey, Loc.MyRoleLine(Configuration.PositionNames[pos - 1], myPuddle));
+            }
+            ImGui.SetWindowFontScale(fontScale);
         }
         else
         {
+            ImGui.TextColored(Yellow, Loc.PickRole);
+        }
+
+        // Who goes where (only shown once you have ticked something in /nisi)
+        var w1 = _cfg.WhoIn(1); var w2 = _cfg.WhoIn(2); var w3 = _cfg.WhoIn(3);
+        if (w1 != "" || w2 != "" || w3 != "")
+            ImGui.TextColored(Grey, Loc.PuddleWho(w1, w2, w3));
+
+        // Your Limit Cut number text (unchanged from before)
+        if (n >= 1 && n <= 8)
+        {
             ImGui.TextColored(Cyan, $"#{n}  {Line(Loc.Thai ? _cfg.WormholeEnterTh : _cfg.WormholeEnter, n)}");
             ImGui.TextColored(White, Loc.After(Line(Loc.Thai ? _cfg.WormholeAfterTh : _cfg.WormholeAfter, n)));
-
             ImGui.TextColored(Grey, Loc.Then(Loc.Thai ? _cfg.WormholeFooterTh : _cfg.WormholeFooter));
-
-            var mine = NisiTracker.PuddleFor(n);
-            if (now != 0)
-            {
-                if (now == mine)
-                    ImGui.TextColored(Green, Loc.SoakNow(now));
-                else
-                    ImGui.TextColored(Grey, Loc.PuddleNotMine(now));
-            }
         }
 
         // Quick number picker (only while the overlay is unlocked so clicks work).
@@ -92,6 +108,13 @@ public sealed class WormholeWindow : Window, IDisposable
                     _cfg.WormholeNumber = i;
                     _cfg.Save();
                 }
+            }
+            ImGui.TextColored(Grey, "Position:");
+            for (var i = 0; i < 8; i++)
+            {
+                ImGui.SameLine();
+                if (ImGui.SmallButton($"{Configuration.PositionNames[i]}##wp{i}"))
+                    _cfg.SetPosition(i + 1);
             }
         }
     }

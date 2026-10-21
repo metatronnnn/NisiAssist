@@ -36,6 +36,33 @@ public sealed class Configuration : IPluginConfiguration
     // Edit the text in /nisi to match your own strat.
     public bool ShowWormhole { get; set; } = true;
     public int WormholeNumber { get; set; } = 0;           // 0 = not set yet
+    public int WormholePosition { get; set; } = 0;         // 0 = none, 1..8 = MT ST H1 H2 D1 D2 D3 D4
+    // Which positions go into puddle #1/#2/#3. Bit i set = position i (0 = MT ... 7 = D4). Empty until YOU tick them in /nisi.
+    public int[] PuddleRoleMask { get; set; } = { 0, 0, 0 };
+
+    public void SetPosition(int pos) { WormholePosition = pos; Save(); }
+
+    public bool InPuddle(int puddle, int pos) =>
+        puddle >= 1 && puddle <= 3 && pos >= 1 && pos <= 8 && PuddleRoleMask != null && PuddleRoleMask.Length >= puddle
+        && (PuddleRoleMask[puddle - 1] & (1 << (pos - 1))) != 0;
+
+    /// <summary>Position names ticked for a puddle, e.g. "D1 D2" (empty when nothing is set).</summary>
+    public string WhoIn(int puddle)
+    {
+        var list = new System.Collections.Generic.List<string>();
+        for (var i = 1; i <= 8; i++) if (InPuddle(puddle, i)) list.Add(PositionNames[i - 1]);
+        return string.Join(" ", list);
+    }
+
+    /// <summary>The puddle (1-3) this position goes into, 0 if none ticked.</summary>
+    public int PuddleOfPosition(int pos)
+    {
+        for (var p = 1; p <= 3; p++) if (InPuddle(p, pos)) return p;
+        return 0;
+    }
+
+    public static readonly string[] PositionNames = { "MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4" };
+
     public string[] WormholeEnter { get; set; } =
     {
         "Start NW corner (with 5).",

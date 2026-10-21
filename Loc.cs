@@ -31,6 +31,16 @@ public static class Loc
 
     public static string WormholeTitle => "WORMHOLE";
     public static string PuddleOrder => T("Puddles: #1 = 5,6  |  #2 = 7,8  |  #3 = 1,2  |  3,4 none", "รูหนอน: #1 = 5,6  |  #2 = 7,8  |  #3 = 1,2  |  3,4 ไม่รับ");
+    public static string PuddleWho(string p1, string p2, string p3) =>
+        T($"Who: #1 = {p1}  |  #2 = {p2}  |  #3 = {p3}", $"ใครเข้า: #1 = {p1}  |  #2 = {p2}  |  #3 = {p3}");
+    public static string MyRoleLine(string role, int puddle) =>
+        puddle > 0 ? T($"{role}: PUDDLE #{puddle}", $"{role}: รูหนอน #{puddle}")
+                   : T($"{role}: no puddle", $"{role}: ไม่ต้องเข้า");
+    public static string PickRole => T("Pick your position in /nisi (or the buttons)", "เลือกตำแหน่งของคุณใน /nisi (หรือปุ่มด้านล่าง)");
+    public static string GoNow(int n) => T($"GO IN  #{n}", $"เข้า  รูหนอน #{n}");
+    public static string NotYou(int n, string who) => string.IsNullOrEmpty(who)
+        ? T($"Puddle #{n} (not you)", $"รูหนอน #{n} (ไม่ใช่คุณ)")
+        : T($"Puddle #{n}: {who}", $"รูหนอน #{n}: {who}");
     public static string PickNumber => T("Pick your number:", "เลือกเลขของคุณ:");
     public static string After(string text) => T($"After: {text}", $"หลังจากนั้น: {text}");
     public static string Then(string text) => T($"Then: {text}", $"ต่อไป: {text}");

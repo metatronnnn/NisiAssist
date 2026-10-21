@@ -77,6 +77,31 @@ public sealed class ConfigWindow : Window, IDisposable
         changed |= Check("Show wormhole guide", _cfg.ShowWormhole, v => _cfg.ShowWormhole = v);
         var whNum = _cfg.WormholeNumber;
         if (ImGui.SliderInt("My number (0 = not set)", ref whNum, 0, 8)) { _cfg.WormholeNumber = whNum; changed = true; }
+        var posIdx = _cfg.WormholePosition;
+        if (ImGui.SliderInt("My position (1=MT 2=ST 3=H1 4=H2 5=D1 6=D2 7=D3 8=D4, 0=none)", ref posIdx, 0, 8))
+        {
+            _cfg.WormholePosition = posIdx;
+            changed = true;
+        }
+        if (ImGui.TreeNode("Who goes into which puddle (tick your strat)"))
+        {
+            for (var p = 1; p <= 3; p++)
+            {
+                ImGui.TextUnformatted($"Puddle #{p}:");
+                for (var i = 1; i <= 8; i++)
+                {
+                    ImGui.SameLine();
+                    var on = _cfg.InPuddle(p, i);
+                    if (ImGui.Checkbox($"{Configuration.PositionNames[i - 1]}##pr{p}_{i}", ref on))
+                    {
+                        if (on) _cfg.PuddleRoleMask[p - 1] |= 1 << (i - 1);
+                        else _cfg.PuddleRoleMask[p - 1] &= ~(1 << (i - 1));
+                        changed = true;
+                    }
+                }
+            }
+            ImGui.TreePop();
+        }
         var whManual = _tracker.WormholeManual;
         if (ImGui.Checkbox("Show wormhole guide now (manual)", ref whManual))
             _tracker.WormholeManual = whManual;
